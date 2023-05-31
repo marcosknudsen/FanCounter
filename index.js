@@ -68,6 +68,12 @@ client.on("message", async (channel, tags, message) => {
             "Comandos: !add {id} {@user} - !delete {@user} - !list {id} - !get {id} - !top {cantidad}  - !ids (para ver los ids principales)"
           );
           break;
+        case "search":
+          let team = getTeam(arg[0]);
+          if (team != null)
+            client.say(channel, `${arg[0]} es hincha de ${getTeam(arg[0])}`);
+          else client.say(channel, `${arg[0]} no esta registrado como hincha`);
+          break;
       }
     }
   }
@@ -186,4 +192,14 @@ function listByTeam(array, team) {
     string += arrayUsers[i] + "\n";
   }
   return string;
+}
+
+function getTeam(id) {
+  let team = null;
+  for (let i of fans) {
+    if (i.user == id) {
+      team = teamNames[i.team];
+    }
+  }
+  return team;
 }
