@@ -43,9 +43,9 @@ client.on("message", async (channel, tags, message) => {
         case "top":
           let arrayTop = top(getTotalArray(fans), arg[0]);
           let string = "";
-          for (let i = 0; i < arg[0]; i++) {
-            string += `${i + 1}- ${teamNames[arrayTop[i].index]}(${
-              arrayTop[i].cantidad
+          for (let i of arrayTop) {
+            string += `${arrayTop.indexOf(i) + 1}- ${teamNames[i.index]}(${
+              i.cantidad
             })\n`;
           }
           client.say(channel, string);
@@ -152,9 +152,10 @@ function getMax(array, arrayExclude) {
 
 function top(array, length) {
   let arrayTop = [];
-  let max;
-  for (let i = 0; i < length; i++) {
+  let i = 0;
+  while (getMax(array, arrayTop).cantidad != 0 && (i!==undefined||i < length)) {
     arrayTop.push(getMax(array, arrayTop));
+    i++;
   }
   return arrayTop;
 }
