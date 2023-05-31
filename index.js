@@ -45,7 +45,7 @@ client.on("message", async (channel, tags, message) => {
           let string = "";
           for (let i of arrayTop) {
             string += `${arrayTop.indexOf(i) + 1}- ${teamNames[i.index]}(${
-              i.cantidad
+              i.quantity
             })\n`;
           }
           client.say(channel, string);
@@ -147,13 +147,13 @@ function getMax(array, arrayExclude) {
       imax = i;
     }
   }
-  return { index: imax, cantidad: max };
+  return { index: imax, quantity: max };
 }
 
 function top(array, length) {
   let arrayTop = [];
   let i = 0;
-  while (getMax(array, arrayTop).cantidad != 0 && (i!==undefined||i < length)) {
+  while (getMax(array, arrayTop).quantity != 0 && (i!==undefined||i < length)) {
     arrayTop.push(getMax(array, arrayTop));
     i++;
   }
