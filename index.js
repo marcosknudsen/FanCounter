@@ -153,7 +153,7 @@ function getMax(array, arrayExclude) {
 function top(array, length) {
   let arrayTop = [];
   let i = 0;
-  while (getMax(array, arrayTop).quantity != 0 && (i!==undefined||i < length)) {
+  while (getMax(array, arrayTop).quantity != 0 && (length===undefined||i < length)) {
     arrayTop.push(getMax(array, arrayTop));
     i++;
   }
