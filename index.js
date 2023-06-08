@@ -74,6 +74,9 @@ client.on("message", async (channel, tags, message) => {
             client.say(channel, `${arg[0]} es hincha de ${getTeam(arg[0])}`);
           else client.say(channel, `${arg[0]} no esta registrado como hincha`);
           break;
+        case "total":
+          client.say(channel, `Hay ${fans.length} hinchas en total`);
+          break;
       }
     }
   }
