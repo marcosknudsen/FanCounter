@@ -51,9 +51,12 @@ client.on("message", async (channel, tags, message) => {
           client.say(channel, string);
           break;
         case "list":
+          teamFans = listByTeam(fans, arg[0]);
           client.say(
             channel,
-            `${teamNames[arg[0]]}: ${listByTeam(fans, arg[0])}`
+            teamFans != ""
+              ? `${teamNames[arg[0]]}: ${teamFans}`
+              : `No hay hinchas registrados de ${teamNames[arg[0]]}`
           );
           break;
         case "ids":
