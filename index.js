@@ -29,11 +29,13 @@ client.on("message", async (channel, tags, message) => {
     if (isMod(tags, channel)) {
       switch (command) {
         case "add":
-          addFan(arg[0], arg[1]);
-          client.say(
-            channel,
-            `${arg[1]} fue agregado como hincha de ${teamNames[arg[0]]}}`
-          );
+          if (arg[1]!=undefined){
+            addFan(arg[0], arg[1]);
+            client.say(
+              channel,
+              `${arg[1]} fue agregado como hincha de ${teamNames[arg[0]]}`
+            );
+          }
           break;
         case "get":
           client.say(
