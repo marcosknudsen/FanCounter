@@ -1,8 +1,9 @@
 const storage = require("node-persist");
 const tmi = require("tmi.js");
 const teamNames = require("./teams.json");
+const path = require("path");
 require("dotenv").config({
-  path: "D:/Coding/FanCounter by Kanu/.env",
+  path: path.join(__filename, "../.env"),
 });
 const client = new tmi.Client({
   options: { debug: false },
