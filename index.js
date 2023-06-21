@@ -1,14 +1,16 @@
 const storage = require("node-persist");
 const tmi = require("tmi.js");
 const teamNames = require("./teams.json");
-require('dotenv').config()
+require("dotenv").config({
+  path: "D:/Coding/FanCounter by Kanu/.env",
+});
 const client = new tmi.Client({
   options: { debug: false },
   identity: {
     username: process.env.twitch_bot_channel,
     password: process.env.twitch_bot_oauth,
   },
-  channels: [process.env.twitch_channel],
+  channels: process.env.twitch_channel.split(" "),
 });
 
 async function start() {
@@ -20,16 +22,17 @@ start();
 
 client.on("connected", async () => {
   fans = await getFromStorage("fans");
+  prefix = (await getFromStorage("prefix"))[0] || "!";
 });
 
 client.connect().catch(console.error);
 client.on("message", async (channel, tags, message) => {
-  if (message.startsWith("!")) {
-    let [command, ...arg] = getCommand(message.toLowerCase());
+  if (message.startsWith(prefix)) {
+    let [command, ...arg] = getCommand(message.toLowerCase(), prefix);
     if (isMod(tags, channel)) {
       switch (command) {
         case "add":
-          if (arg[1]!=undefined){
+          if (arg[1] != undefined) {
             addFan(arg[0], arg[1]);
             client.say(
               channel,
@@ -89,17 +92,33 @@ client.on("message", async (channel, tags, message) => {
         case "total":
           client.say(channel, `Hay ${fans.length} hinchas en total`);
           break;
+        case "setprefix":
+          if (arg[0] !== undefined&&arg[0]!==''){
+            await changePrefix(arg[0]);
+            client.say(channel, `Prefix modificado: "${prefix}"`);
+          }
+          else
+            client.say(channel,'Error: intente nuevamente (!setprefix {prefix})')
+          break;
+        case "getprefix":
+          client.say(channel, `Prefix: "${prefix}"`);
+          break;
       }
     }
   }
 });
 
+async function changePrefix(newPrefix) {
+  prefix = newPrefix;
+  await storage.setItem("prefix", prefix);
+}
+
 function isMod(tags, channel) {
   return tags.mod || channel.slice(1) === tags.username;
 }
 
-function getCommand(string) {
-  string = string.replace("!", "");
+function getCommand(string, prefix) {
+  string = string.replace(prefix, "");
   return string.split(" ");
 }
 
